@@ -1,6 +1,7 @@
 module Day2 where
 
 import           Data.List
+import           Data.List.Split
 
 changeNthElement :: Int -> a -> [a] -> [a]
 changeNthElement idx newElement list
@@ -22,12 +23,6 @@ intcodeComputer index program = case drop index program of
       1 -> arg1 + arg2
       2 -> arg1 * arg2
 
-
-splitBy delimiter = foldr f [[]]
- where
-  f c l@(x : xs) | c == delimiter = [] : l
-                 | otherwise      = (c : x) : xs
-
 findInput :: [Int] -> Int -> Maybe (Int, Int)
 findInput program target =
   let options = [ (a, b) | a <- [0 .. 99], b <- [0 .. 99] ]
@@ -45,7 +40,7 @@ findInput program target =
 main :: IO ()
 main = do
   content <- readFile "day-2-input.txt"
-  let program    = map (\x -> read x :: Int) (splitBy ',' content)
+  let program    = map (\x -> read x :: Int) (splitOn "," content)
   let newProgram = intcodeComputer 0 program
   print (head newProgram)
 
